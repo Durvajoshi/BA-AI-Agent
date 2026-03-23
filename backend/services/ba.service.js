@@ -93,6 +93,7 @@ async function generateDiagram(baJson, apiKey) {
       }
 
       let fixed = line
+        .replace(/\|>/g, "|")
         .replace(/\[\{/g, "[")
         .replace(/\}\]/g, "]")
         .replace(/\{"/g, "{")
@@ -140,6 +141,7 @@ async function generateDiagram(baJson, apiKey) {
     - Start/End: id(["Label"])
  4. CONNECTIONS: Use --> for all transitions. Use |Label| for decision outcomes.
     - Example: B1{"Valid?"} -->|Yes| C1["Success"]
+    - CRITICAL: NEVER use a > after the text block. Use -->|Label|Node NOT -->|Label|>Node.
  5. SPECIAL CHARACTERS: Inside quotes, avoid using " or ( or ) or [ or ]. If you MUST use them, they are forbidden. Stick to plain alphanumeric text + spaces.
  6. NO MULTILINE: Do NOT use \\n or literal newlines inside labels. Keep labels short (2-5 words).
  7. ID SYSTEM: Use incremental IDs (S1, P1, D1, E1 for Start, Process, Decision, End).

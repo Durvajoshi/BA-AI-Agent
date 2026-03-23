@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as chatApi from "../api/chatApi";
+import * as chatApi from "../services/chat/conversations";
 import "../styles/ConversationHistory.css";
 
 export function ConversationHistory({ currentConversationId, onSelectConversation, onNewChat, isCollapsed, onToggleCollapse }) {

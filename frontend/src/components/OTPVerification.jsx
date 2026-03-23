@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../services/api';
 import '../styles/OTPVerification.css';
 
 function OTPVerification({ email, onVerified, onBackToForm, mode = 'signup' }) {
@@ -36,7 +37,7 @@ function OTPVerification({ email, onVerified, onBackToForm, mode = 'signup' }) {
     setSuccess('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const response = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +70,7 @@ function OTPVerification({ email, onVerified, onBackToForm, mode = 'signup' }) {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/request-otp', {
+      const response = await fetch(`${API_BASE_URL}/auth/request-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

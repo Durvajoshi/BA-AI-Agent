@@ -6,11 +6,11 @@ import { Signup } from "./components/Signup";
 import { ConversationHistory } from "./components/ConversationHistory";
 import { Profile } from "./components/Profile";
 import { JsonViewer } from "./components/JsonViewer";
-import * as chatApi from "./api/chatApi";
+import * as chatServices from "./services/chat";
+import * as jiraServices from "./services/jira";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ForgotPassword } from "./components/ForgotPassword";
-//hihihihihihihihihi
 function ChatInterface() {
   const { user, logout } = useContext(AuthContext);
   const [conversationId, setConversationId] = useState(null);
@@ -68,7 +68,7 @@ function ChatInterface() {
 
   const fetchFreeTierStatus = async () => {
     try {
-      const status = await chatApi.getFreeTierStatus();
+      const status = await chatServices.getFreeTierStatus();
       setFreeTierStatus(status);
     } catch (err) {
       console.error("Error fetching free tier status:", err);
@@ -86,7 +86,7 @@ function ChatInterface() {
     // Cleanup empty conversations on app load
     const cleanup = async () => {
       try {
-        await chatApi.cleanupEmptyConversations();
+        await chatServices.cleanupEmptyConversations();
       } catch (err) {
         console.error("Cleanup error:", err);
       }
@@ -111,7 +111,7 @@ function ChatInterface() {
   const checkStatus = async (cid) => {
     if (!cid) return;
     try {
-      const data = await chatApi.checkJiraStatus(cid);
+      const data = await jiraServices.checkJiraStatus(cid);
       if (data.exists) {
         setHasBA(true);
         setIsExported(data.isExported);
@@ -140,7 +140,7 @@ function ChatInterface() {
 
   const createNewChat = async () => {
     try {
-      const data = await chatApi.startNewConversation();
+      const data = await chatServices.startNewConversation();
       localStorage.setItem("conversationId", data.conversationId);
       setConversationId(data.conversationId);
       setMessages([]);
@@ -160,7 +160,7 @@ function ChatInterface() {
 
   const loadMessages = async (id) => {
     try {
-      const data = await chatApi.loadMessages(id);
+      const data = await chatServices.loadMessages(id);
       if (Array.isArray(data)) {
         setMessages(data);
       }
@@ -176,7 +176,7 @@ function ChatInterface() {
 
       // Load current diagram from original API if no specific version requested 
       // OR load versions first
-      const allVersions = await chatApi.getVersions(id);
+      const allVersions = await chatServices.getVersions(id);
       setVersions(allVersions);
 
       // Default to returning the selected version's data if we have versions
@@ -203,7 +203,7 @@ function ChatInterface() {
         setEstimate(activeVersion.project_estimate || "");
       } else {
         // Fallback to original API just in case
-        const data = await chatApi.loadDiagram(id);
+        const data = await chatServices.loadDiagram(id);
         setDiagram(data.diagram || "");
         setGherkin(data.gherkin || "");
         setDataSchema(data.schema || "");
@@ -449,7 +449,7 @@ function ChatInterface() {
     setMessages(prev => [...prev, { sender: "user", content }]);
 
     try {
-      const result = await chatApi.sendMessage(conversationId, content);
+      const result = await chatServices.sendMessage(conversationId, content);
       
       // Update free tier usage if returned from backend
       if (result.free_messages_used !== undefined) {
@@ -492,7 +492,7 @@ function ChatInterface() {
 
     setIsExporting(true);
     try {
-      const data = await chatApi.exportToJira(conversationId);
+      const data = await jiraServices.exportToJira(conversationId);
       if (data.projectKey) {
         setIsExported(true);
         // Use the user's base URL instead of a hardcoded one
@@ -527,7 +527,7 @@ function ChatInterface() {
 
     setIsGeneratingPRD(true);
     try {
-      const data = await chatApi.generatePRD(conversationId);
+      const data = await chatServices.generatePRD(conversationId);
       setPrdMarkdown(data.prd);
       setHasGeneratedPRD(true);
     } catch (err) {
@@ -554,7 +554,7 @@ function ChatInterface() {
 
     setIsGeneratingBRD(true);
     try {
-      const data = await chatApi.generateBRD(conversationId);
+      const data = await chatServices.generateBRD(conversationId);
       setBrdMarkdown(data.brd);
       setHasGeneratedBRD(true);
     } catch (err) {

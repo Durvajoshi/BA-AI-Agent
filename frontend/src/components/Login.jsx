@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { login } from "../api/authApi";
+import { login } from "../services/auth";
 import { AuthContext } from "../context/AuthContext";
 import OTPVerification from "./OTPVerification";
 import "../styles/Auth.css";
@@ -91,7 +91,7 @@ const handleSubmit = async (e) => {
           <div style={{ textAlign: "right", marginTop: "-10px", marginBottom: "15px" }}>
   <button
     type="button"
-    onClick={() => onSwitchToForgot()} // We will add this prop in App.jsx
+    onClick={() => onSwitchToForgot()}
     style={{ background: "none", border: "none", color: "var(--brand-600)", fontSize: "12px", cursor: "pointer", boxShadow: "none" }}
   >
     Forgot Password?

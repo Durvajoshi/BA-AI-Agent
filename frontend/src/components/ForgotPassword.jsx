@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { requestPasswordReset, completePasswordReset } from "../api/authApi";
+import { requestPasswordReset, completePasswordReset } from "../services/auth";
 import "../styles/Auth.css";
 
 export function ForgotPassword({ onBackToLogin }) {

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { signup } from "../api/authApi";
 import { AuthContext } from "../context/AuthContext";
+import { API_BASE_URL } from "../services/api";
 import OTPVerification from "./OTPVerification";
 import "../styles/Auth.css";
 
@@ -24,12 +24,10 @@ export function Signup({ onSwitchToLogin }) {
       return;
     }
 
-   
-
     setLoading(true);
 
     try {
-  const response = await fetch('http://localhost:5000/api/auth/signup', {
+  const response = await fetch(`${API_BASE_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -70,14 +68,14 @@ export function Signup({ onSwitchToLogin }) {
 
   try {
     // Now complete the signup
-    const response = await fetch('http://localhost:5000/api/auth/signup', {
+    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: signupData.email,
         password: signupData.password,
         fullName: signupData.fullName,
-        otpVerified: true, // ✅ IMPORTANT
+        otpVerified: true,
       }),
     });
 

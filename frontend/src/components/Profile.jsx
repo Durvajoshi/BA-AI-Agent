@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import * as authApi from "../api/authApi";
+import * as authApi from "../services/auth";
 
 export function Profile({ onBackToChat }) {
   const { user, logout } = useContext(AuthContext);
